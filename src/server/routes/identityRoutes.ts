@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { requireAuth, requireRoles, AuthenticatedRequest } from '../auth';
 import { IdentityService } from '../../services/identityService';
+import { requireAdminPro } from '../middleware/adminProAuthMiddleware';
 
 const router = Router();
 
@@ -181,10 +182,47 @@ router.post('/mfa/disable', requireAuth, async (req: AuthenticatedRequest, res: 
 // --- ADMIN ROUTES ---
 
 // GET /api/identity/admin/users
-router.get('/admin/users', requireAuth, requireRoles('ADMIN'), async (_req: AuthenticatedRequest, res: Response) => {
+router.get('/admin/users', requireAdminPro, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const profiles = await IdentityService.listProfiles();
-    res.json(profiles);
+    const search = String(req.query.search || '').trim().toLowerCase();
+    const status = String(req.query.status || 'ALL').trim();
+    const role = String(req.query.role || 'ALL').trim();
+    const sortBy = String(req.query.sortBy || 'updatedAt');
+    const sortDir = String(req.query.sortDir || 'desc') === 'asc' ? 'asc' : 'desc';
+    const page = Math.max(Number(req.query.page || 1), 1);
+    const pageSize = Math.min(Math.max(Number(req.query.pageSize || 50), 1), 100);
+
+    const filtered = profiles.filter((profile) => {
+      const matchesSearch =
+        !search ||
+        profile.userId.toLowerCase().includes(search) ||
+        profile.identityId.toLowerCase().includes(search) ||
+        profile.username.toLowerCase().includes(search) ||
+        profile.primaryEmail.toLowerCase().includes(search) ||
+        (profile.primaryPhone || '').toLowerCase().includes(search) ||
+        (profile.departmentName || '').toLowerCase().includes(search) ||
+        (profile.companyName || '').toLowerCase().includes(search);
+
+      const matchesStatus = status === 'ALL' || profile.accountStatus === status;
+      const matchesRole = role === 'ALL' || profile.role === role;
+      return matchesSearch && matchesStatus && matchesRole;
+    });
+
+    const sorted = [...filtered].sort((a, b) => {
+      const left = String((a as unknown as Record<string, unknown>)[sortBy] || '');
+      const right = String((b as unknown as Record<string, unknown>)[sortBy] || '');
+      return sortDir === 'asc' ? left.localeCompare(right) : right.localeCompare(left);
+    });
+
+    const start = (page - 1) * pageSize;
+    res.json({
+      data: sorted.slice(start, start + pageSize),
+      page,
+      pageSize,
+      total: filtered.length,
+      totalPages: Math.ceil(filtered.length / pageSize),
+    });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Failed to list identity profiles';
     res.status(500).json({ error: msg });
@@ -192,17 +230,17 @@ router.get('/admin/users', requireAuth, requireRoles('ADMIN'), async (_req: Auth
 });
 
 // PATCH /api/identity/admin/status
-router.patch('/admin/status', requireAuth, requireRoles('ADMIN'), async (req: AuthenticatedRequest, res: Response) => {
+router.patch('/admin/status', requireAdminPro, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const adminUserId = req.user!.userId;
     const { targetUserId, newStatus, reason } = req.body;
 
-    if (!targetUserId || !newStatus) {
-      res.status(400).json({ error: 'معرف المستخدم والحالة الجديدة مطلوبان' });
+    if (!targetUserId || !newStatus || !String(reason || '').trim()) {
+      res.status(400).json({ error: 'معرف المستخدم والحالة الجديدة والسبب الإلزامي مطلوبة' });
       return;
     }
 
-    const updated = await IdentityService.setStatus(targetUserId, newStatus, reason || 'تحديث إداري', adminUserId);
+    const updated = await IdentityService.setStatus(targetUserId, newStatus, String(reason).trim(), adminUserId);
     res.json(updated);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Failed to update account status';
@@ -211,7 +249,7 @@ router.patch('/admin/status', requireAuth, requireRoles('ADMIN'), async (req: Au
 });
 
 // PUT /api/identity/admin/password-policy
-router.put('/admin/password-policy', requireAuth, requireRoles('ADMIN'), async (req: AuthenticatedRequest, res: Response) => {
+router.put('/admin/password-policy', requireAdminPro, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const policy = req.body;
     const updated = await IdentityService.updatePasswordPolicy(policy);

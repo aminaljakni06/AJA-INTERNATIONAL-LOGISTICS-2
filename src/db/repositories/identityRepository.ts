@@ -56,7 +56,7 @@ function upsertLocalProfile(profile: IdentityProfile): void {
 }
 
 function deriveIdentityType(role: UserRole): IdentityType {
-  if (['ADMIN', 'ERP_ADMIN', 'SYSTEM_ADMIN', 'STAFF'].includes(role)) return 'EMPLOYEE';
+  if (['ADMIN', 'ERP_ADMIN', 'SYSTEM_ADMIN', 'PLATFORM_ADMIN', 'STAFF'].includes(role)) return 'EMPLOYEE';
   if (role === 'DRIVER') return 'DRIVER';
   return 'CUSTOMER';
 }
@@ -82,7 +82,7 @@ function buildProfileFromLocalUser(user: User): IdentityProfile {
     accountStatus: 'ACTIVE',
     role,
     employmentStatus: 'Active',
-    securityLevel: user.securityLevel || (['ADMIN', 'SYSTEM_ADMIN'].includes(role) ? 5 : 1),
+    securityLevel: user.securityLevel || (['ADMIN', 'SYSTEM_ADMIN', 'PLATFORM_ADMIN'].includes(role) ? 5 : 1),
     passwordUpdatedDate: now,
     mfaEnabled: false,
     riskScore: 0,

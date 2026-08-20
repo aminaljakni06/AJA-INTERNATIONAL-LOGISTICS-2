@@ -1,0 +1,11 @@
+node_modules
+dist
+build
+coverage
+.tools
+data/db.json
+*.log
+dev-server-*.log
+complete-conversation-export.md
+.env
+.env.*

@@ -89,7 +89,7 @@ export const AdminIdentityManagement: React.FC = () => {
       });
       if (res.ok) {
         const data = await res.json();
-        setIdentities(data);
+        setIdentities(Array.isArray(data) ? data : data.data || []);
       }
 
       const polRes = await fetch('/api/identity/password-policy');
@@ -111,6 +111,10 @@ export const AdminIdentityManagement: React.FC = () => {
 
   const handleUpdateAccountStatus = async () => {
     if (!selectedIdentity) return;
+    if (!statusReason.trim()) {
+      setStatusMessage(isAr ? 'سبب تغيير الحالة إلزامي لأغراض التدقيق' : 'A reason is required for audit.');
+      return;
+    }
     try {
       const token = localStorage.getItem('aja_auth_token');
       const res = await fetch('/api/identity/admin/status', {
@@ -475,6 +479,7 @@ export const AdminIdentityManagement: React.FC = () => {
                 <option value="ACTIVE">{isAr ? 'نشط (ACTIVE)' : 'Active'}</option>
                 <option value="PENDING">{isAr ? 'معلق (PENDING)' : 'Pending'}</option>
                 <option value="SUSPENDED">{isAr ? 'موقوف (SUSPENDED)' : 'Suspended'}</option>
+                <option value="FROZEN">{isAr ? 'مجمد (FROZEN)' : 'Frozen'}</option>
                 <option value="LOCKED">{isAr ? 'مقفل (LOCKED)' : 'Locked'}</option>
                 <option value="INACTIVE">{isAr ? 'غير نشط (INACTIVE)' : 'Inactive'}</option>
               </select>

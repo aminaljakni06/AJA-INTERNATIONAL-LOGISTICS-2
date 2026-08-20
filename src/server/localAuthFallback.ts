@@ -7,11 +7,7 @@ function isLocalFallbackEnabled(): boolean {
 }
 
 function toFirestoreRole(role: User['role']): UserRole {
-  if (role === 'ADMIN' || role === 'STAFF' || role === 'CUSTOMER') {
-    return role;
-  }
-
-  return 'CUSTOMER';
+  return role as UserRole;
 }
 
 function toUserDoc(user: User): UserDoc {
@@ -21,7 +17,15 @@ function toUserDoc(user: User): UserDoc {
     phone: user.phone,
     displayName: user.fullName,
     role: toFirestoreRole(user.role),
-    status: 'ACTIVE',
+    roles: user.roles,
+    permissions: user.permissions,
+    customPermissions: user.customPermissions,
+    companyId: user.companyId,
+    companyName: user.companyName,
+    branchId: user.branchId,
+    departmentId: user.departmentId,
+    securityLevel: user.securityLevel,
+    status: (user as User & { status?: UserDoc['status'] }).status || 'ACTIVE',
     passwordHash: user.passwordHash,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,

@@ -64,7 +64,24 @@ export function requireRoles(...allowedRoles: UserRole[]) {
       return;
     }
 
-    if (!allowedRoles.includes(req.user.role)) {
+    const adminCompatibleRoles: UserRole[] = ['ADMIN', 'SYSTEM_ADMIN', 'PLATFORM_ADMIN', 'ERP_ADMIN'];
+    const staffCompatibleRoles: UserRole[] = [
+      'STAFF',
+      'ADMIN',
+      'SYSTEM_ADMIN',
+      'PLATFORM_ADMIN',
+      'ERP_ADMIN',
+      'OPERATIONS_MANAGER',
+      'BRANCH_MANAGER',
+      'EMPLOYEE',
+    ];
+
+    const roleAllowed =
+      allowedRoles.includes(req.user.role) ||
+      (allowedRoles.includes('ADMIN') && adminCompatibleRoles.includes(req.user.role)) ||
+      (allowedRoles.includes('STAFF') && staffCompatibleRoles.includes(req.user.role));
+
+    if (!roleAllowed) {
       res.status(403).json({ error: 'ليس لديك صلاحية للوصول إلى هذا الإجراء (Forbidden)' });
       return;
     }

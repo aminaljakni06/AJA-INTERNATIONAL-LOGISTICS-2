@@ -18,6 +18,7 @@ export type AccountStatus =
   | 'ACTIVE'
   | 'INACTIVE'
   | 'SUSPENDED'
+  | 'FROZEN'
   | 'LOCKED'
   | 'EXPIRED'
   | 'DISABLED'
@@ -292,4 +293,3 @@ export interface SAMLMetadataConfig {
   x509Certificate: string;
   nameIdFormat: string;
 }
-

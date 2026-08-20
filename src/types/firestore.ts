@@ -1,4 +1,6 @@
-export type UserRole = 'CUSTOMER' | 'STAFF' | 'ADMIN';
+import type { UserRole } from './user';
+
+export type { UserRole };
 export type UserStatus = 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
 
 export interface UserDoc {
@@ -7,6 +9,16 @@ export interface UserDoc {
   phone?: string;
   displayName: string;
   role: UserRole;
+  roles?: Array<UserRole | string>;
+  permissions?: string[];
+  customPermissions?: string[];
+  companyId?: string | null;
+  companyName?: string | null;
+  branchId?: string | null;
+  departmentId?: string | null;
+  securityLevel?: number;
+  forcePasswordChange?: boolean;
+  metadata?: Record<string, unknown>;
   status: UserStatus;
   passwordHash?: string; // For auth password verification
   createdAt: string;

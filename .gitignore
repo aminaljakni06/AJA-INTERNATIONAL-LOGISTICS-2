@@ -9,3 +9,5 @@ dist/
 build/
 data/db.json
 complete-conversation-export.md
+
+.vercel

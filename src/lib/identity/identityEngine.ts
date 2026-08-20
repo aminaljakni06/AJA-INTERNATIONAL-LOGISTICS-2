@@ -28,8 +28,10 @@ import {
   getLoginPolicy 
 } from '../../db/repositories/identityRepository';
 import { getUserById, updateUser } from '../../db/repositories/userRepository';
+import { listUsers } from '../../db/repositories/userRepository';
 import { EventBusService } from '../../services/eventBusService';
 import { createAuditLog } from '../../db/repositories/auditLogRepository';
+import { isAdminProRole, isPrivilegedAdministrator } from '../../server/middleware/adminProAuthMiddleware';
 
 export class IdentityEngine {
 
@@ -122,12 +124,27 @@ export class IdentityEngine {
     reason: string,
     actorUserId: string
   ): Promise<IdentityProfile> {
+    const cleanReason = String(reason || '').trim();
+    if (!cleanReason) {
+      throw new Error('A mandatory reason is required for account lifecycle changes.');
+    }
+
+    const targetUser = await getUserById(userId);
+    if (!targetUser) {
+      throw new Error(`User with ID ${userId} not found.`);
+    }
+
+    const privilegedDeactivation = isAdminProRole(targetUser.role) && ['SUSPENDED', 'FROZEN', 'LOCKED', 'DISABLED', 'INACTIVE', 'DELETED'].includes(newStatus);
+    if (privilegedDeactivation) {
+      await this.assertNotLastPrivilegedAdministrator(userId);
+    }
+
     const current = await this.getIdentityProfile(userId);
     const updated = await createOrUpdateIdentityProfile(userId, { accountStatus: newStatus });
 
     // Sync user status to legacy status field
     let legacyStatus: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' = 'ACTIVE';
-    if (['SUSPENDED', 'LOCKED', 'EXPIRED', 'DISABLED'].includes(newStatus)) {
+    if (['SUSPENDED', 'FROZEN', 'LOCKED', 'EXPIRED', 'DISABLED'].includes(newStatus)) {
       legacyStatus = 'SUSPENDED';
     } else if (['INACTIVE', 'ARCHIVED', 'DELETED'].includes(newStatus)) {
       legacyStatus = 'INACTIVE';
@@ -135,16 +152,51 @@ export class IdentityEngine {
 
     await updateUser(userId, { status: legacyStatus });
 
+    let revokedSessions = 0;
+    if (['SUSPENDED', 'FROZEN', 'LOCKED', 'DISABLED', 'DELETED'].includes(newStatus)) {
+      revokedSessions = await revokeAllSessionsExcept(userId, '');
+    }
+
     await createAuditLog({
       actorUserId,
-      action: 'IDENTITY_STATUS_CHANGED',
+      action: this.getStatusAuditAction(newStatus),
       entityType: 'IDENTITY',
       entityId: userId,
-      before: { status: current?.accountStatus },
-      after: { status: newStatus, reason },
+      before: { status: current?.accountStatus, legacyStatus: targetUser.status },
+      after: {
+        status: newStatus,
+        legacyStatus,
+        reason: cleanReason,
+        revokedSessions,
+        targetUserId: userId,
+      },
     });
 
     return updated;
+  }
+
+  private async assertNotLastPrivilegedAdministrator(targetUserId: string): Promise<void> {
+    const users = await listUsers();
+    const activePrivileged = users.filter((user) => isPrivilegedAdministrator(user));
+    const remaining = activePrivileged.filter((user) => user.id !== targetUserId);
+
+    if (activePrivileged.length <= 1 || remaining.length === 0) {
+      throw new Error('Last privileged administrator protection blocked this action.');
+    }
+  }
+
+  private getStatusAuditAction(status: AccountStatus): string {
+    const map: Partial<Record<AccountStatus, string>> = {
+      ACTIVE: 'ACCOUNT_REACTIVATED',
+      SUSPENDED: 'ACCOUNT_SUSPENDED',
+      FROZEN: 'ACCOUNT_FROZEN',
+      LOCKED: 'ACCOUNT_LOCKED',
+      DISABLED: 'ACCOUNT_DISABLED',
+      INACTIVE: 'ACCOUNT_INACTIVATED',
+      DELETED: 'ACCOUNT_DELETION_MARKED',
+    };
+
+    return map[status] || 'IDENTITY_STATUS_CHANGED';
   }
 
   /**
@@ -185,7 +237,7 @@ export class IdentityEngine {
   ): Promise<{ allowed: boolean; reason?: string }> {
     const profile = await this.getIdentityProfile(userId);
 
-    if (profile && ['SUSPENDED', 'LOCKED', 'DISABLED', 'DELETED'].includes(profile.accountStatus)) {
+    if (profile && ['SUSPENDED', 'FROZEN', 'LOCKED', 'DISABLED', 'DELETED'].includes(profile.accountStatus)) {
       return { allowed: false, reason: `الحساب غير متاح حالياً (${profile.accountStatus})` };
     }
 

@@ -1,6 +1,7 @@
 /**
  * Input Validation Utilities for Aja Logistics Database Layer
  */
+import { UserRole } from '../types/user';
 
 export class ValidationError extends Error {
   constructor(message: string) {
@@ -52,11 +53,47 @@ export function validateNumber(value: unknown, fieldName: string, min?: number):
   return num;
 }
 
-export function validateRole(role: unknown): 'CUSTOMER' | 'STAFF' | 'ADMIN' {
-  if (role === 'CUSTOMER' || role === 'STAFF' || role === 'ADMIN') {
-    return role;
+const VALID_USER_ROLES = new Set<UserRole>([
+  'CUSTOMER',
+  'STAFF',
+  'ADMIN',
+  'DISPATCHER',
+  'FINANCE_OFFICER',
+  'DRIVER',
+  'SYSTEM_ADMIN',
+  'PLATFORM_ADMIN',
+  'ERP_ADMIN',
+  'COMPANY_ADMIN',
+  'CEO',
+  'COO',
+  'CFO',
+  'HR_MANAGER',
+  'FINANCE_MANAGER',
+  'SALES_MANAGER',
+  'CUSTOMER_SERVICE_MANAGER',
+  'WAREHOUSE_MANAGER',
+  'CUSTOMS_MANAGER',
+  'FLEET_MANAGER',
+  'OPERATIONS_MANAGER',
+  'BRANCH_MANAGER',
+  'TEAM_LEADER',
+  'EMPLOYEE',
+  'PARTNER',
+  'AGENT',
+  'AUDITOR',
+  'COMPLIANCE_OFFICER',
+  'LEGAL_COUNSEL',
+  'CUSTOMS_OFFICER',
+  'ACCOUNTANT',
+  'GUEST',
+  'READ_ONLY',
+]);
+
+export function validateRole(role: unknown): UserRole {
+  if (typeof role === 'string' && VALID_USER_ROLES.has(role as UserRole)) {
+    return role as UserRole;
   }
-  throw new ValidationError(`Invalid user role: ${role}. Expected CUSTOMER, STAFF, or ADMIN.`);
+  throw new ValidationError(`Invalid user role: ${role}. Expected a canonical AJA user role.`);
 }
 
 export function validateTrackingNumber(tn: string): string {
