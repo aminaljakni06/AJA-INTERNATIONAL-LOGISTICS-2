@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function() {
+        try {
+          var _f = window.fetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() { return _f; },
+            set: function(v) { _f = v; },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          try {
+            var p = Object.getPrototypeOf(window);
+            if (p) {
+              var _f2 = window.fetch;
+              Object.defineProperty(p, 'fetch', {
+                get: function() { return _f2; },
+                set: function(v) { _f2 = v; },
+                configurable: true,
+                enumerable: true
+              });
+            }
+          } catch (e2) {}
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0B1728" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="أجا اللوجستية" />
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>AJA International Logistics | Moving Business Forward</title>
+    <meta name="description" content="AJA International Logistics is Saudi Arabia’s premier logistics partner providing Air Freight, Ocean Freight, GCC Trucking, FASAH Customs Clearance, and Smart Warehousing." />
+    <meta name="keywords" content="AJA Logistics, Saudi Logistics, Sea Freight, Air Freight, GCC Land Transport, Customs Clearance, FASAH, Vision 2030, أجا اللوجستية" />
+    <meta name="author" content="AJA International Logistics" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aja-logistics.com/" />
+    <meta property="og:title" content="AJA International Logistics | Moving Business Forward" />
+    <meta property="og:description" content="Saudi Arabia's premier end-to-end logistics & supply chain management platform." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80" />
+    <meta property="og:site_name" content="AJA International Logistics" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AJA International Logistics | Moving Business Forward" />
+    <meta name="twitter:description" content="Next-Generation Global Logistics & Supply Chain Platform across Saudi Arabia and the GCC." />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80" />
+
+    <!-- Structured Data JSON-LD Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LogisticsService",
+      "name": "AJA International Logistics",
+      "alternateName": "أجا الدولية اللوجستية",
+      "url": "https://aja-logistics.com",
+      "logo": "https://aja-logistics.com/icon.svg",
+      "description": "Saudi Arabia’s premier end-to-end logistics & supply chain partner specializing in Air & Ocean Freight, GCC Land Transport, Customs Clearance, and Smart Warehousing.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Salah Al Din Al Ayyubi Rd, Al Malaz",
+        "addressLocality": "Riyadh",
+        "addressRegion": "Riyadh Province",
+        "addressCountry": "SA"
+      },
+      "telephone": "+966114000000",
+      "areaServed": ["SA", "AE", "KW", "BH", "QA", "OM", "Worldwide"]
+    }
+    </script>
+
+    <link rel="manifest" href="/public/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800;900&family=Urbanist:ital,wght@0,500;0,600;0,700;1,600&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-sans antialiased bg-[#050C16] text-slate-100 selection:bg-[#1479C9] selection:text-white">
+    <!-- Skip to main content link for Screen Reader Accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-[#1479C9] focus:text-white focus:font-bold">
+      الانتقال إلى المحتوى الرئيسي / Skip to main content
+    </a>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

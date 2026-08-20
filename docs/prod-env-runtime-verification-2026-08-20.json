@@ -1,0 +1,203 @@
+{
+  "step": "PROD-ENV-01",
+  "generatedAt": "2026-08-20T12:44:43Z",
+  "gitRepository": "NOT_PRESENT",
+  "environmentDiscovery": {
+    "result": "PASS",
+    "sourcePatternsInspected": [
+      "process.env",
+      "import.meta.env",
+      "dotenv/config",
+      "scripts/audit-production-env.mjs",
+      "src/server/firebaseAdmin.ts",
+      "server.ts",
+      ".env* keys only",
+      "firebase*.json",
+      "firestore.rules"
+    ],
+    "discoveredRuntimeVariables": [
+      "ADYEN_API_KEY",
+      "ADYEN_CLIENT_KEY",
+      "ADYEN_ENVIRONMENT",
+      "ADYEN_HMAC_KEY",
+      "ADYEN_LIVE_ENDPOINT_PREFIX",
+      "ADYEN_MERCHANT_ACCOUNT",
+      "ADYEN_RETURN_URL",
+      "ADYEN_WEBHOOK_URL",
+      "APP_URL",
+      "DISABLE_LOCAL_AUTH_FALLBACK",
+      "DISABLE_LOCAL_DATA_FALLBACK",
+      "DISABLE_LOCAL_ORG_FALLBACK",
+      "ENV_AUDIT_MODE",
+      "FIREBASE_CLI",
+      "FIREBASE_PROJECT_ID",
+      "FIREBASE_SERVICE_ACCOUNT_JSON",
+      "FIRESTORE_DATABASE_ID",
+      "FIRESTORE_EMULATOR_HOST",
+      "FORCE_LOCAL_DATA_FALLBACK",
+      "GEMINI_API_KEY",
+      "GOV_API_SMOKE_PORT",
+      "GOV_API_SMOKE_REQUEST_TIMEOUT_MS",
+      "JAVA_HOME",
+      "JWT_SECRET",
+      "LOCAL_DB_FILE",
+      "NODE_ENV",
+      "PATH",
+      "PORT",
+      "RUN_FIRESTORE_TESTS",
+      "SKIP_FIREBASE_SEED",
+      "SMOKE_PORT",
+      "VITEST"
+    ]
+  },
+  "environmentGate": {
+    "command": "npm run security:env",
+    "result": "BLOCKED_BY_MISSING_EXTERNAL_SECRET",
+    "mode": "production",
+    "failures": [
+      "Firebase Admin credentials are required: set FIREBASE_SERVICE_ACCOUNT_JSON or GOOGLE_APPLICATION_CREDENTIALS."
+    ],
+    "warnings": [
+      "GEMINI_API_KEY is not configured; AI routes that call Gemini will return configuration errors."
+    ],
+    "notes": [
+      "JWT_SECRET passed because it is configured locally and meets the audit rules.",
+      "No secret values were printed or stored in this evidence file."
+    ]
+  },
+  "firebaseAdmin": {
+    "result": "BLOCKED_BY_MISSING_EXTERNAL_SECRET",
+    "supportedCredentialStrategies": [
+      "FIREBASE_SERVICE_ACCOUNT_JSON parsed and passed to firebase-admin cert()",
+      "Application Default Credentials via firebase-admin applicationDefault(), including GOOGLE_APPLICATION_CREDENTIALS or Cloud Run service identity"
+    ],
+    "recommendedProductionStrategy": "Prefer Cloud Run service identity / ADC where available; avoid long-lived service account JSON keys unless operationally required.",
+    "localRuntimeAction": "SKIP_FIREBASE_SEED=true was used for production-like local startup because no external Firebase Admin credential was available."
+  },
+  "gemini": {
+    "classification": "OPTIONAL_FEATURE_WARNING",
+    "evidence": [
+      "security:env emits a warning, not a failure, when GEMINI_API_KEY is missing.",
+      "AI routes call Gemini only when invoked; startup and core health/static routes do not require GEMINI_API_KEY.",
+      "Some AI endpoints fail closed with configuration errors or use fallback logic when the key is missing."
+    ]
+  },
+  "build": {
+    "command": "npm run build",
+    "result": "PASS",
+    "notes": [
+      "Initial sandboxed build hit Vite node_modules/.vite-temp EPERM.",
+      "Elevated rerun passed.",
+      "dist/server.cjs, dist/index.html, and dist/assets were produced."
+    ]
+  },
+  "runtime": {
+    "applicationStarted": true,
+    "command": "npm start",
+    "environment": {
+      "NODE_ENV": "production",
+      "PORT": "3307",
+      "SKIP_FIREBASE_SEED": "true"
+    },
+    "serverUrl": "http://127.0.0.1:3307",
+    "port": 3307,
+    "startupLogs": [
+      "[Firebase Seed] Skipped via SKIP_FIREBASE_SEED=true",
+      "[Aja Logistics] Server running on http://0.0.0.0:3307"
+    ],
+    "runtimeProcess": "HEALTHY",
+    "shutdown": "CLEAN",
+    "postShutdownPortCheck": "No LISTENING process remained on port 3307; only TIME_WAIT entries were observed."
+  },
+  "httpProbes": [
+    {
+      "name": "Frontend root",
+      "url": "http://127.0.0.1:3307/",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "result": "PASS"
+    },
+    {
+      "name": "API health",
+      "url": "http://127.0.0.1:3307/api/health",
+      "status": 200,
+      "responseShape": {
+        "status": "ok",
+        "name": "Aja Logistics API",
+        "timestamp": "ISO timestamp"
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "Core frontend asset",
+      "url": "http://127.0.0.1:3307/assets/index-C2XE9s69.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 355135,
+      "result": "PASS"
+    }
+  ],
+  "tests": {
+    "lint": {
+      "command": "npm run lint",
+      "result": "PASS"
+    },
+    "unit": {
+      "command": "npm test",
+      "result": "PASS",
+      "passed": 69,
+      "failed": 0
+    },
+    "governanceSmoke": {
+      "command": "npm run smoke:governance-api",
+      "result": "PASS",
+      "passed": 208,
+      "failed": 0,
+      "evidenceFile": "docs/governance-api-smoke-results-2026-08-20.json"
+    },
+    "productSmoke": {
+      "command": "npm run smoke:product-resources",
+      "result": "PASS"
+    },
+    "firestoreEmulator": {
+      "command": "npm run test:integration:firestore:emulator",
+      "result": "PASS",
+      "passed": 67,
+      "failed": 0
+    }
+  },
+  "security": {
+    "firestoreBoundary": {
+      "command": "npm run security:firestore-boundary",
+      "result": "PASS"
+    },
+    "serverOnlyImports": {
+      "command": "npm run security:server-only-imports",
+      "result": "PASS"
+    },
+    "firestoreRules": {
+      "command": "npm run security:firestore-rules",
+      "result": "PASS"
+    },
+    "clientRepositoryAudit": {
+      "command": "npm run audit:client-repositories",
+      "result": "PASS"
+    },
+    "clientBundleSecretScan": {
+      "command": "rg secret indicators in dist/index.html and dist/assets excluding sourcemaps",
+      "result": "PASS",
+      "notes": [
+        "No client bundle matches for FIREBASE_SERVICE_ACCOUNT_JSON, GOOGLE_APPLICATION_CREDENTIALS, private key markers, GEMINI_API_KEY, JWT_SECRET, ADYEN_API_KEY, or ADYEN_HMAC_KEY.",
+        "Server bundle contains environment variable names by design; no secret values were found or stored."
+      ]
+    }
+  },
+  "blockers": [
+    {
+      "id": "FIREBASE_ADMIN_CREDENTIALS_MISSING",
+      "status": "EXTERNAL_SECRET_REQUIRED",
+      "description": "Production-like environment audit cannot pass until FIREBASE_SERVICE_ACCOUNT_JSON or GOOGLE_APPLICATION_CREDENTIALS/ADC is provided securely outside source control."
+    }
+  ],
+  "finalStatus": "STEP_PROD_ENV_01_RUNTIME_VERIFIED_WITH_EXTERNAL_SECRET_BLOCKER"
+}

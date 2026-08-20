@@ -1,0 +1,425 @@
+{
+  "version": "1.0",
+  "databaseId": "ai-studio-ajalogistics-ce12f431-9dd4-4866-9b23-5fc45eca3810",
+  "collections": [
+    {
+      "name": "users",
+      "description": "User account management with roles (CUSTOMER, STAFF, ADMIN)",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "email", "type": "string", "required": true },
+        { "name": "phone", "type": "string", "required": false },
+        { "name": "displayName", "type": "string", "required": true },
+        { "name": "role", "type": "string", "required": true, "enumValues": ["CUSTOMER", "STAFF", "ADMIN"] },
+        { "name": "status", "type": "string", "required": true, "enumValues": ["ACTIVE", "INACTIVE", "SUSPENDED"] },
+        { "name": "createdAt", "type": "string", "required": true },
+        { "name": "updatedAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "customers",
+      "description": "Customer profiles linking user accounts to business/personal contact info",
+      "fields": [
+        { "name": "userId", "type": "string", "required": true },
+        { "name": "fullName", "type": "string", "required": true },
+        { "name": "companyName", "type": "string", "required": false },
+        { "name": "phone", "type": "string", "required": true },
+        { "name": "email", "type": "string", "required": true },
+        { "name": "address", "type": "string", "required": false },
+        { "name": "city", "type": "string", "required": false },
+        { "name": "country", "type": "string", "required": false },
+        { "name": "createdAt", "type": "string", "required": true },
+        { "name": "updatedAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "companies",
+      "description": "Company registration and commercial details",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "name", "type": "string", "required": true },
+        { "name": "commercialRegister", "type": "string", "required": false },
+        { "name": "taxNumber", "type": "string", "required": false },
+        { "name": "phone", "type": "string", "required": false },
+        { "name": "address", "type": "string", "required": false },
+        { "name": "createdAt", "type": "string", "required": true },
+        { "name": "updatedAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "quoteRequests",
+      "description": "Quotations submitted by customers for freight and logistics services",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "requestNumber", "type": "string", "required": true },
+        { "name": "customerId", "type": "string", "required": true },
+        { "name": "shipmentType", "type": "string", "required": true },
+        { "name": "pickupLocation", "type": "string", "required": true },
+        { "name": "deliveryLocation", "type": "string", "required": true },
+        { "name": "cargoType", "type": "string", "required": true },
+        { "name": "approximateWeight", "type": "number", "required": false },
+        { "name": "packageOrContainerCount", "type": "number", "required": false },
+        { "name": "expectedShippingDate", "type": "string", "required": false },
+        { "name": "attachments", "type": "array", "required": false },
+        { "name": "notes", "type": "string", "required": false },
+        { "name": "status", "type": "string", "required": true },
+        { "name": "internalNotes", "type": "string", "required": false },
+        { "name": "quoteResponse", "type": "map", "required": false },
+        { "name": "createdAt", "type": "string", "required": true },
+        { "name": "updatedAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "shipments",
+      "description": "Active and historical cargo shipments with tracking numbers",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "trackingNumber", "type": "string", "required": true },
+        { "name": "customerId", "type": "string", "required": true },
+        { "name": "quoteRequestId", "type": "string", "required": false },
+        { "name": "shipmentType", "type": "string", "required": true },
+        { "name": "pickupLocation", "type": "string", "required": true },
+        { "name": "deliveryLocation", "type": "string", "required": true },
+        { "name": "shippingDate", "type": "string", "required": false },
+        { "name": "estimatedArrivalDate", "type": "string", "required": false },
+        { "name": "currentStatus", "type": "string", "required": true },
+        { "name": "customerVisibleNotes", "type": "string", "required": false },
+        { "name": "internalNotes", "type": "string", "required": false },
+        { "name": "createdAt", "type": "string", "required": true },
+        { "name": "updatedAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "shipmentEvents",
+      "description": "Append-only tracking milestones for shipments",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "shipmentId", "type": "string", "required": true },
+        { "name": "status", "type": "string", "required": true },
+        { "name": "description", "type": "string", "required": true },
+        { "name": "location", "type": "string", "required": true },
+        { "name": "visibleToCustomer", "type": "boolean", "required": true },
+        { "name": "createdBy", "type": "string", "required": true },
+        { "name": "createdAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "documents",
+      "description": "Attached documents, bills of lading, customs paperwork",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "ownerType", "type": "string", "required": true },
+        { "name": "ownerId", "type": "string", "required": true },
+        { "name": "fileName", "type": "string", "required": true },
+        { "name": "fileType", "type": "string", "required": true },
+        { "name": "fileSize", "type": "number", "required": true },
+        { "name": "storagePath", "type": "string", "required": true },
+        { "name": "uploadedBy", "type": "string", "required": true },
+        { "name": "createdAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "notifications",
+      "description": "User notifications regarding status updates and system alerts",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "recipientUserId", "type": "string", "required": true },
+        { "name": "title", "type": "string", "required": true },
+        { "name": "body", "type": "string", "required": true },
+        { "name": "type", "type": "string", "required": true },
+        { "name": "relatedEntityType", "type": "string", "required": false },
+        { "name": "relatedEntityId", "type": "string", "required": false },
+        { "name": "isRead", "type": "boolean", "required": true },
+        { "name": "createdAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "messages",
+      "description": "Communication messages between customers and logistics operations staff",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "customerId", "type": "string", "required": true },
+        { "name": "shipmentId", "type": "string", "required": false },
+        { "name": "senderId", "type": "string", "required": true },
+        { "name": "message", "type": "string", "required": true },
+        { "name": "attachment", "type": "string", "required": false },
+        { "name": "status", "type": "string", "required": true },
+        { "name": "createdAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "services",
+      "description": "Logistics service offerings published on the platform",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "type", "type": "string", "required": true },
+        { "name": "titleAr", "type": "string", "required": true },
+        { "name": "titleEn", "type": "string", "required": true },
+        { "name": "descriptionAr", "type": "string", "required": true },
+        { "name": "descriptionEn", "type": "string", "required": true },
+        { "name": "iconName", "type": "string", "required": true },
+        { "name": "featuresAr", "type": "array", "required": true },
+        { "name": "featuresEn", "type": "array", "required": true },
+        { "name": "createdAt", "type": "string", "required": true },
+        { "name": "updatedAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "faqs",
+      "description": "Frequently asked questions for customer support",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "category", "type": "string", "required": true },
+        { "name": "questionAr", "type": "string", "required": true },
+        { "name": "questionEn", "type": "string", "required": true },
+        { "name": "answerAr", "type": "string", "required": true },
+        { "name": "answerEn", "type": "string", "required": true },
+        { "name": "createdAt", "type": "string", "required": true },
+        { "name": "updatedAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "cmsContent",
+      "description": "Dynamic CMS section text and headers",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "key", "type": "string", "required": true },
+        { "name": "titleAr", "type": "string", "required": true },
+        { "name": "titleEn", "type": "string", "required": true },
+        { "name": "contentAr", "type": "string", "required": true },
+        { "name": "contentEn", "type": "string", "required": true },
+        { "name": "updatedAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "auditLogs",
+      "description": "Immutable audit trails for administrative, operational, and customer activities",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "actorUserId", "type": "string", "required": true },
+        { "name": "action", "type": "string", "required": true },
+        { "name": "entityType", "type": "string", "required": true },
+        { "name": "entityId", "type": "string", "required": true },
+        { "name": "before", "type": "map", "required": false },
+        { "name": "after", "type": "map", "required": false },
+        { "name": "createdAt", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_asns",
+      "description": "Advance Shipping Notices (ASN) for inbound logistics receiving",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "asnNumber", "type": "string", "required": true },
+        { "name": "purchaseOrderNumber", "type": "string", "required": true },
+        { "name": "supplierNameAr", "type": "string", "required": true },
+        { "name": "expectedArrivalDate", "type": "string", "required": true },
+        { "name": "status", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_goods_receipts",
+      "description": "Goods Receipt Notes (GRN) for received stock validation",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "grnNumber", "type": "string", "required": true },
+        { "name": "asnNumber", "type": "string", "required": true },
+        { "name": "status", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_quality_inspections",
+      "description": "Quality inspection and quarantine logs for inbound shipments",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "grnNumber", "type": "string", "required": true },
+        { "name": "inspectionResult", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_putaway_tasks",
+      "description": "Directed Putaway execution tasks for bin location assignment",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "taskNumber", "type": "string", "required": true },
+        { "name": "status", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_dock_appointments",
+      "description": "Dock appointment scheduling and queue management",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "dockNumber", "type": "string", "required": true },
+        { "name": "status", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_osd_records",
+      "description": "Over, Short & Damaged (OS&D) discrepancy incident claims",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "osdNumber", "type": "string", "required": true },
+        { "name": "discrepancyType", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_ncr_records",
+      "description": "Non-Conformance Reports (NCR) and CAPA workflows",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "ncrNumber", "type": "string", "required": true },
+        { "name": "status", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_inbound_containers",
+      "description": "Inbound ocean and reefer container tracking and unload progress",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "containerNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_crossdock_records",
+      "description": "Dock-to-dock cross-docking transfer records",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "crossDockNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_inbound_labels",
+      "description": "GS1-128, QR Code, and RFID label print job logs",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "jobId", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "warehouse_inbound_analytics",
+      "description": "Inbound receiving KPI summaries and supplier SLA metrics",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "totalAsnsThisMonth", "type": "number", "required": true }
+      ]
+    },
+    {
+      "name": "wes_putaway_rules",
+      "description": "Putaway rule engine definitions for directed and FEFO storage",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "ruleCode", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "wes_slotting_profiles",
+      "description": "Dynamic ABC velocity slotting profiles and re-slotting recommendations",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "skuCode", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "wes_warehouse_tasks",
+      "description": "WES Warehouse Execution tasks queue",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "taskNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "wes_warehouse_resources",
+      "description": "Forklift, reach truck, AGV, operator resource assignments",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "resourceCode", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "wes_replenishments",
+      "description": "Forward picking and bulk min/max stock replenishment triggers",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "replenishmentNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "wes_exceptions",
+      "description": "WES incident resolution and location exception logs",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "exceptionNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "wes_kpis",
+      "description": "WES execution performance KPI summaries",
+      "fields": [
+        { "name": "avgPutawayTimeMins", "type": "number", "required": true }
+      ]
+    },
+    {
+      "name": "inventory_movements",
+      "description": "Enterprise inventory movement ledger entries",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "movementNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "inventory_reservations",
+      "description": "Hard and soft order/project inventory reservations",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "reservationNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "inventory_allocations",
+      "description": "FEFO/FIFO order inventory allocation records",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "allocationNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "inventory_holds",
+      "description": "Quality and administrative inventory hold records",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "holdNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "inventory_transfers",
+      "description": "Inter-warehouse and branch stock transfer orders",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "transferNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "inventory_adjustments",
+      "description": "Cycle count and shrinkage inventory adjustment vouchers",
+      "fields": [
+        { "name": "id", "type": "string", "required": true },
+        { "name": "adjustmentNumber", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "inventory_atp",
+      "description": "Available to promise real-time metrics per SKU and warehouse",
+      "fields": [
+        { "name": "skuCode", "type": "string", "required": true }
+      ]
+    },
+    {
+      "name": "inventory_timeline",
+      "description": "Event stream for real-time inventory changes",
+      "fields": [
+        { "name": "id", "type": "string", "required": true }
+      ]
+    }
+  ]
+}

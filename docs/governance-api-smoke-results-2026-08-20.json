@@ -1,0 +1,1907 @@
+{
+  "generatedAt": "2026-08-20T13:10:08.706Z",
+  "baseUrl": "http://127.0.0.1:3197",
+  "totals": {
+    "checks": 208,
+    "passed": 208,
+    "failed": 0
+  },
+  "failed": false,
+  "results": [
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/profiles/le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/profiles/le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "PUT",
+      "route": "/api/corporate-governance/profiles/le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "PUT",
+      "route": "/api/corporate-governance/profiles/le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/appointments?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/appointments?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/appointments",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/appointments",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/appointments/nonexistent/transition",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/appointments/nonexistent/transition",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/psc?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/psc?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/psc",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/psc",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "DELETE",
+      "route": "/api/corporate-governance/appointment/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "DELETE",
+      "route": "/api/corporate-governance/appointment/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/analytics/snapshots?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/analytics/snapshots?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/analytics/snapshots",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/analytics/snapshots",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/scenarios?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/scenarios?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/scenarios",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/scenarios",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/scenarios/nonexistent/supersede",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/scenarios/nonexistent/supersede",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/simulations?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/simulations?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/simulations",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/simulations",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/simulations/nonexistent/finalize",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/simulations/nonexistent/finalize",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/decision-intelligence?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/decision-intelligence?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/decision-intelligence",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/decision-intelligence",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/board-advisory-briefs?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/board-advisory-briefs?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/board-advisory-briefs",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/board-advisory-briefs",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-governance/executive-insights?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-governance/executive-insights?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-governance/analytics/export",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-governance/analytics/export",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-records?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-records?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-records/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-records/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records/nonexistent/supersede",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records/nonexistent/supersede",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records/nonexistent/invalidate",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records/nonexistent/invalidate",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "DELETE",
+      "route": "/api/corporate-records/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "DELETE",
+      "route": "/api/corporate-records/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-records/nonexistent/disposition-check",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-records/nonexistent/disposition-check",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records/evidence/submit",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records/evidence/submit",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records/evidence/nonexistent/verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records/evidence/nonexistent/verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records/evidence/nonexistent/invalidate",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records/evidence/nonexistent/invalidate",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-records/evidence/nonexistent/download",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-records/evidence/nonexistent/download",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/corporate-records/registers/le-smoke-a/DIRECTORS",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/corporate-records/registers/le-smoke-a/DIRECTORS",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records/registers/le-smoke-a/DIRECTORS/snapshot",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records/registers/le-smoke-a/DIRECTORS/snapshot",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records/legal-holds",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records/legal-holds",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/corporate-records/legal-holds/nonexistent/release",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/corporate-records/legal-holds/nonexistent/release",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory/sources",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory/sources",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/sources",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/sources",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/sources/verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/sources/verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory/changes?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory/changes?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/changes",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/changes",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/applicability",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/applicability",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/impact-assessment",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/impact-assessment",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/impact-assessment/review",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/impact-assessment/review",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/adoption-plans",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/adoption-plans",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/adoption-plans/route-approval",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/adoption-plans/route-approval",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/adoption-plans/execute",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/adoption-plans/execute",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory/adoption-plans/verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory/adoption-plans/verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory/reconcile?changeId=missing&legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory/reconcile?changeId=missing&legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory/replay?asOfDate=2026-08-20&legalEntityId=le-smoke-a&jurisdiction=SA",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory/replay?asOfDate=2026-08-20&legalEntityId=le-smoke-a&jurisdiction=SA",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/response-plan",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/response-plan",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/submissions/draft",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/submissions/draft",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/submissions/nonexistent/approve",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/submissions/nonexistent/approve",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/submissions/nonexistent/execute",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/submissions/nonexistent/execute",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/feedback",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/feedback",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/commitments",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/commitments",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/commitments/nonexistent/verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/commitments/nonexistent/verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/close",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases/nonexistent/close",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases/nonexistent/reconcile",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases/nonexistent/reconcile",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases/nonexistent/replay",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases/nonexistent/replay",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases/nonexistent/export",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases/nonexistent/export",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/evaluate-readiness",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/evaluate-readiness",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/draft",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/draft",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/attest-control",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/attest-control",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/certify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/certify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/independently-verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/independently-verify",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/close",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/close",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/reopen",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/reopen",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/supersede",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/supersede",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/compliance-certifications/entity/le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/compliance-certifications/entity/le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/compliance-certifications/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/compliance-certifications/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/nonexistent/replay",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/nonexistent/replay",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/nonexistent/export",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/nonexistent/export",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/authority/policies?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/authority/policies?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/authority/policies/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/authority/policies/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/policies",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/policies",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/policies/nonexistent/versions",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/policies/nonexistent/versions",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/policies/versions/nonexistent/publish",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/policies/versions/nonexistent/publish",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/authority/controls?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/authority/controls?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/controls",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/controls",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/controls/nonexistent/test",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/controls/nonexistent/test",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/authority/delegations?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/authority/delegations?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/delegations",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/delegations",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/delegations/nonexistent/revoke",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/delegations/nonexistent/revoke",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/authority/rules?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/authority/rules?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/rules",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/rules",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/evaluate",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/evaluate",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "GET",
+      "route": "/api/governance/authority/poa?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "GET",
+      "route": "/api/governance/authority/poa?legalEntityId=le-smoke-a",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/poa",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/poa",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "POST",
+      "route": "/api/governance/authority/poa/nonexistent/revoke",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "POST",
+      "route": "/api/governance/authority/poa/nonexistent/revoke",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "unauthenticated",
+      "method": "DELETE",
+      "route": "/api/governance/authority/policy/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "invalid-token",
+      "method": "DELETE",
+      "route": "/api/governance/authority/policy/nonexistent",
+      "expected": 401,
+      "actual": 401,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "positive-get-smoke",
+      "resource": "Corporate Governance API",
+      "method": "GET",
+      "route": "/api/corporate-governance/appointments?legalEntityId=le-smoke-a",
+      "expected": "2xx",
+      "actual": 200,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "positive-get-smoke",
+      "resource": "Corporate Records API",
+      "method": "GET",
+      "route": "/api/corporate-records?legalEntityId=le-smoke-a",
+      "expected": "2xx",
+      "actual": 200,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "positive-get-smoke",
+      "resource": "Regulatory API",
+      "method": "GET",
+      "route": "/api/governance/regulatory/changes?legalEntityId=le-smoke-a",
+      "expected": "2xx",
+      "actual": 200,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "positive-get-smoke",
+      "resource": "Regulatory Cases API",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases?legalEntityId=le-smoke-a",
+      "expected": "2xx",
+      "actual": 200,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "positive-get-smoke",
+      "resource": "Compliance Certifications API",
+      "method": "GET",
+      "route": "/api/governance/compliance-certifications/entity/le-smoke-a",
+      "expected": "2xx",
+      "actual": 200,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "positive-get-smoke",
+      "resource": "Governance Authority API",
+      "method": "GET",
+      "route": "/api/governance/authority/policies?legalEntityId=le-smoke-a",
+      "expected": "2xx",
+      "actual": 200,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "authorization-lower-privilege",
+      "resource": "Corporate Governance API",
+      "method": "GET",
+      "route": "/api/corporate-governance/appointments?legalEntityId=le-smoke-a",
+      "expected": 403,
+      "actual": 403,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "authorization-lower-privilege",
+      "resource": "Corporate Records API",
+      "method": "GET",
+      "route": "/api/corporate-records?legalEntityId=le-smoke-a",
+      "expected": 403,
+      "actual": 403,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "authorization-lower-privilege",
+      "resource": "Regulatory API",
+      "method": "GET",
+      "route": "/api/governance/regulatory/changes?legalEntityId=le-smoke-a",
+      "expected": 403,
+      "actual": 403,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "authorization-lower-privilege",
+      "resource": "Regulatory Cases API",
+      "method": "GET",
+      "route": "/api/governance/regulatory-cases?legalEntityId=le-smoke-a",
+      "expected": 403,
+      "actual": 403,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "authorization-lower-privilege",
+      "resource": "Compliance Certifications API",
+      "method": "GET",
+      "route": "/api/governance/compliance-certifications/entity/le-smoke-a",
+      "expected": 403,
+      "actual": 403,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "authorization-lower-privilege",
+      "resource": "Governance Authority API",
+      "method": "GET",
+      "route": "/api/governance/authority/policies?legalEntityId=le-smoke-a",
+      "expected": 403,
+      "actual": 403,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "validation-empty-payload",
+      "resource": "Corporate Governance API",
+      "method": "POST",
+      "route": "/api/corporate-governance/appointments",
+      "expected": "4xx",
+      "actual": 400,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "validation-empty-payload",
+      "resource": "Corporate Records API",
+      "method": "POST",
+      "route": "/api/corporate-records",
+      "expected": "4xx",
+      "actual": 400,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "validation-empty-payload",
+      "resource": "Regulatory API",
+      "method": "POST",
+      "route": "/api/governance/regulatory/changes",
+      "expected": "4xx",
+      "actual": 400,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "validation-empty-payload",
+      "resource": "Regulatory Cases API",
+      "method": "POST",
+      "route": "/api/governance/regulatory-cases",
+      "expected": "4xx",
+      "actual": 400,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "validation-empty-payload",
+      "resource": "Compliance Certifications API",
+      "method": "POST",
+      "route": "/api/governance/compliance-certifications/draft",
+      "expected": "4xx",
+      "actual": 400,
+      "pass": true,
+      "leaked": false
+    },
+    {
+      "group": "validation-empty-payload",
+      "resource": "Governance Authority API",
+      "method": "POST",
+      "route": "/api/governance/authority/policies",
+      "expected": "4xx",
+      "actual": 400,
+      "pass": true,
+      "leaked": false
+    }
+  ],
+  "serverLogTail": [
+    "[Firebase Seed] Skipped via SKIP_FIREBASE_SEED=true",
+    "[Aja Logistics] Server running on http://0.0.0.0:3197",
+    ""
+  ]
+}

@@ -1,0 +1,13 @@
+export { ScrollLogisticsJourney } from './ScrollLogisticsJourney';
+export { TrustedBySection } from './TrustedBySection';
+export { CoreServicesSection } from './CoreServicesSection';
+export { WhyChooseAjaSection } from './WhyChooseAjaSection';
+export { GlobalLogisticsSolutionsSection } from './GlobalLogisticsSolutionsSection';
+export { IndustriesServedSection } from './IndustriesServedSection';
+export { InteractiveTrackingSection } from './InteractiveTrackingSection';
+export { DigitalPlatformSection } from './DigitalPlatformSection';
+export { StatisticsSection } from './StatisticsSection';
+export { InteractiveWorldMapSection } from './InteractiveWorldMapSection';
+export { CustomerTestimonialsSection } from './CustomerTestimonialsSection';
+export { PartnersCertificationsSection } from './PartnersCertificationsSection';
+export { LatestNewsSection } from './LatestNewsSection';

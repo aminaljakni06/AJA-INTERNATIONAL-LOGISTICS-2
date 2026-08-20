@@ -1,0 +1,11 @@
+node_modules/
+coverage/
+.tools/
+.DS_Store
+*.log
+.env*
+!.env.example
+dist/
+build/
+data/db.json
+complete-conversation-export.md

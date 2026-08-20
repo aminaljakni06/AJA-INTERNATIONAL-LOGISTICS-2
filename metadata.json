@@ -1,0 +1,10 @@
+{
+  "name": "Remix Remix Aja Logistics",
+  "description": "Enterprise-grade Arabic RTL logistics and freight platform featuring customer portal, quote requests, shipment tracking, customs clearance, and administrative dashboard.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
