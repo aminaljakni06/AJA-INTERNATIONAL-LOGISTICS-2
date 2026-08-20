@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import express from 'express';
+import express, { type Express } from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import authRoutes from './src/server/routes/authRoutes';
@@ -70,9 +70,8 @@ import { securityHeadersMiddleware, inputSanitizerMiddleware, createRateLimiter 
 import { enterpriseApiResponseMiddleware } from './src/server/middleware/apiResponseMiddleware';
 import { expressErrorMiddleware, expressNotFoundMiddleware } from './src/server/middleware/expressErrorMiddleware';
 
-async function startServer() {
+export async function createApp(): Promise<Express> {
   const app = express();
-  const PORT = Number(process.env.PORT || 3000);
 
   // Security Headers, Enterprise API Response Standard & Input Sanitization Middleware
   app.use(securityHeadersMiddleware);
@@ -201,9 +200,18 @@ async function startServer() {
     });
   }
 
+  return app;
+}
+
+async function startServer() {
+  const app = await createApp();
+  const PORT = Number(process.env.PORT || 3000);
+
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`[Aja Logistics] Server running on http://0.0.0.0:${PORT}`);
   });
 }
 
-startServer();
+if (process.env.VERCEL !== '1') {
+  void startServer();
+}
