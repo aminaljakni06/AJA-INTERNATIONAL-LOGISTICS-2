@@ -1,11 +1,16 @@
-import { Router, Response } from 'express';
+import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
+import crypto from 'node:crypto';
 import { generateToken, requireAuth, requireRoles, AuthenticatedRequest, sanitizeUser } from '../auth';
 import { getUserByEmail, createUser, getUserById, updateUser, listUsers } from '../../db/repositories/userRepository';
 import { createCompany } from '../../db/repositories/companyRepository';
 import { createAuditLog } from '../../db/repositories/auditLogRepository';
 import { upsertCustomerProfile, getCustomerByUserId } from '../../db/repositories/customerRepository';
 import { UserRole } from '../../types/firestore';
+import { getMFAConfig } from '../../db/repositories/identityRepository';
+import { identityEngine } from '../../lib/identity/identityEngine';
+import { AUTH_ASSURANCE, requiresPrivilegedMfa } from '../../lib/auth/privilegedAuthPolicy';
+import { beginMfaChallenge, verifyMfaChallenge } from '../../lib/auth/privilegedMfaService';
 import {
   getLocalUserByEmail,
   getLocalUserById,
@@ -17,6 +22,25 @@ const router = Router();
 
 // Temporary store for password reset tokens: email -> { code: string, expiresAt: number }
 const passwordResetStore = new Map<string, { code: string; expiresAt: number }>();
+
+function getUserAgent(req: Request): string {
+  const value = req.headers['user-agent'];
+  return Array.isArray(value) ? value.join(' ') : value || '';
+}
+
+function buildLoginUser(user: NonNullable<Awaited<ReturnType<typeof getUserByEmailWithLocalFallback>>>) {
+  return {
+    id: user.id,
+    email: user.email,
+    fullName: user.displayName,
+    displayName: user.displayName,
+    phone: user.phone,
+    role: user.role,
+    status: user.status,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  };
+}
 
 async function getUserByEmailWithLocalFallback(email: string) {
   try {
@@ -71,7 +95,7 @@ async function createAuthAuditLogBestEffort(
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, mfaTransactionId, challengeId, mfaCode, code } = req.body;
 
     if (!email || !password) {
       res.status(400).json({ error: 'البريد الإلكتروني وكلمة المرور مطلوبان' });
@@ -96,28 +120,137 @@ router.post('/login', async (req, res) => {
       return;
     }
 
+    const loginPolicy = await identityEngine.evaluateLoginPolicy(user.id, {
+      ip: req.ip || '127.0.0.1',
+      userAgent: getUserAgent(req),
+    });
+    if (!loginPolicy.allowed) {
+      await createAuthAuditLogBestEffort(user, 'LOGIN_POLICY_VIOLATED', { reason: loginPolicy.reason, role: user.role }, req.ip);
+      res.status(403).json({ error: loginPolicy.reason || 'تسجيل الدخول غير مسموح حسب سياسة الأمان' });
+      return;
+    }
+
+    const privilegedLogin = requiresPrivilegedMfa(user.role);
+    if (privilegedLogin) {
+      const mfaConfig = await getMFAConfig(user.id);
+      const transactionId = String(mfaTransactionId || challengeId || '').trim();
+      const submittedCode = String(mfaCode || code || '').trim();
+
+      if (!mfaConfig.mfaEnabled || mfaConfig.method !== 'TOTP' || !mfaConfig.secretKey) {
+        const sessionId = `sess_${crypto.randomUUID()}`;
+        const token = generateToken({
+          userId: user.id,
+          email: user.email,
+          role: user.role,
+          fullName: user.displayName,
+          sessionId,
+          authenticationLevel: AUTH_ASSURANCE.PASSWORD_ONLY,
+          mfaVerified: false,
+          mfaEnrollmentRequired: true,
+        });
+        await identityEngine.registerSessionAndDevice(user.id, token, {
+          ip: req.ip || '127.0.0.1',
+          userAgent: getUserAgent(req),
+          sessionId,
+          authenticationLevel: AUTH_ASSURANCE.PASSWORD_ONLY,
+          mfaVerified: false,
+        });
+        await createAuthAuditLogBestEffort(user, 'MFA_ENROLLMENT_REQUIRED', { role: user.role, ip: req.ip }, req.ip);
+        res.status(403).json({
+          token,
+          user: buildLoginUser(user),
+          errorCode: 'MFA_ENROLLMENT_REQUIRED',
+          mfaEnrollmentRequired: true,
+          authenticationLevel: AUTH_ASSURANCE.PASSWORD_ONLY,
+          message: 'Privileged MFA enrollment is required before Admin Pro access is granted.',
+        });
+        return;
+      }
+
+      if (!transactionId || !submittedCode) {
+        const challenge = await beginMfaChallenge({
+          userId: user.id,
+          purpose: 'LOGIN_MFA',
+          ipAddress: req.ip,
+        });
+        res.json({
+          mfaRequired: true,
+          mfaTransactionId: challenge.challengeId,
+          expiresAt: challenge.expiresAt,
+          method: mfaConfig.method,
+          message: 'Privileged MFA verification is required.',
+        });
+        return;
+      }
+
+      const verified = await verifyMfaChallenge({
+        challengeId: transactionId,
+        userId: user.id,
+        code: submittedCode,
+      });
+      if (verified.ok !== true) {
+        res.status(401).json({ error: verified.message, errorCode: verified.errorCode, mfaRequired: true });
+        return;
+      }
+
+      const sessionId = `sess_${crypto.randomUUID()}`;
+      const token = generateToken({
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+        fullName: user.displayName,
+        sessionId,
+        authenticationLevel: AUTH_ASSURANCE.MFA_VERIFIED,
+        mfaVerified: true,
+        mfaMethod: mfaConfig.method,
+        mfaVerifiedAt: verified.verifiedAt,
+      });
+      await identityEngine.registerSessionAndDevice(user.id, token, {
+        ip: req.ip || '127.0.0.1',
+        userAgent: getUserAgent(req),
+        sessionId,
+        authenticationLevel: AUTH_ASSURANCE.MFA_VERIFIED,
+        mfaVerified: true,
+        mfaMethod: mfaConfig.method,
+        mfaVerifiedAt: verified.verifiedAt,
+      });
+      await createAuthAuditLogBestEffort(user, 'PRIVILEGED_USER_LOGIN_MFA_VERIFIED', { email: user.email, role: user.role, ip: req.ip }, req.ip);
+
+      res.json({
+        token,
+        user: buildLoginUser(user),
+        authenticationLevel: AUTH_ASSURANCE.MFA_VERIFIED,
+        mfaVerified: true,
+        mfaVerifiedAt: verified.verifiedAt,
+      });
+      return;
+    }
+
+    const sessionId = `sess_${crypto.randomUUID()}`;
     const token = generateToken({
       userId: user.id,
       email: user.email,
       role: user.role,
       fullName: user.displayName,
+      sessionId,
+      authenticationLevel: AUTH_ASSURANCE.PASSWORD_ONLY,
+      mfaVerified: false,
+    });
+    await identityEngine.registerSessionAndDevice(user.id, token, {
+      ip: req.ip || '127.0.0.1',
+      userAgent: getUserAgent(req),
+      sessionId,
+      authenticationLevel: AUTH_ASSURANCE.PASSWORD_ONLY,
+      mfaVerified: false,
     });
 
     await createAuthAuditLogBestEffort(user, 'USER_LOGIN', { email: user.email, role: user.role, ip: req.ip }, req.ip);
 
     res.json({
       token,
-      user: {
-        id: user.id,
-        email: user.email,
-        fullName: user.displayName,
-        displayName: user.displayName,
-        phone: user.phone,
-        role: user.role,
-        status: user.status,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
+      user: buildLoginUser(user),
+      authenticationLevel: AUTH_ASSURANCE.PASSWORD_ONLY,
+      mfaVerified: false,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Login failed';

@@ -35,6 +35,9 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mfaTransactionId, setMfaTransactionId] = useState<string | null>(null);
+  const [mfaCode, setMfaCode] = useState('');
+  const [mfaExpiresAt, setMfaExpiresAt] = useState<string | null>(null);
 
   // Password reset modal state
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
@@ -73,15 +76,33 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
       setError(isAr ? 'يرجى إدخال البريد الإلكتروني وكلمة المرور' : 'Please enter email and password.');
       return;
     }
+    if (mfaTransactionId && !mfaCode.trim()) {
+      setError(isAr ? 'يرجى إدخال رمز التحقق الثنائي' : 'Please enter the MFA verification code.');
+      return;
+    }
 
     setError(null);
     setLoading(true);
-    const result = await login(email.trim(), password.trim());
+    const result = await login(email.trim(), password.trim(), mfaTransactionId ? {
+      mfaTransactionId,
+      mfaCode: mfaCode.trim(),
+    } : undefined);
     setLoading(false);
+
+    if (result.mfaRequired && result.mfaTransactionId) {
+      setMfaTransactionId(result.mfaTransactionId);
+      setMfaExpiresAt(result.expiresAt || null);
+      setMfaCode('');
+      setError(isAr ? 'أدخل رمز التحقق الثنائي لإكمال دخول Admin Pro.' : 'Enter the MFA code to complete Admin Pro sign-in.');
+      return;
+    }
 
     if (!result.success) {
       setError(result.error || (isAr ? 'خطأ في بيانات الاعتماد الخاصة بالإدارة' : 'Invalid admin credentials.'));
     } else {
+      setMfaTransactionId(null);
+      setMfaCode('');
+      setMfaExpiresAt(null);
       if (rememberMe) {
         localStorage.setItem('aja_remembered_admin_email', email.trim());
       } else {
@@ -266,6 +287,29 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
               </button>
             </div>
           </div>
+
+          {mfaTransactionId && (
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                {isAr ? 'رمز التحقق الثنائي *' : 'MFA Code *'}
+              </label>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={mfaCode}
+                onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="123456"
+                required
+                className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-white/10 bg-[#030712] text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#00F0FF] focus:border-transparent min-h-[44px] font-mono tracking-widest"
+              />
+              {mfaExpiresAt && (
+                <p className="text-[11px] text-slate-400">
+                  {isAr ? 'تنتهي صلاحية التحدي في: ' : 'Challenge expires at: '}
+                  <span className="font-mono">{new Date(mfaExpiresAt).toLocaleTimeString()}</span>
+                </p>
+              )}
+            </div>
+          )}
 
           <Button
             type="submit"

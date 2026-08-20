@@ -5,7 +5,19 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; user?: User; error?: string }>;
+  login: (
+    email: string,
+    password: string,
+    options?: { mfaTransactionId?: string; mfaCode?: string }
+  ) => Promise<{
+    success: boolean;
+    user?: User;
+    error?: string;
+    mfaRequired?: boolean;
+    mfaTransactionId?: string;
+    mfaEnrollmentRequired?: boolean;
+    expiresAt?: string;
+  }>;
   register: (data: { email: string; password: string; fullName: string; phone: string; companyName?: string }) => Promise<{ success: boolean; error?: string }>;
   requestPasswordReset: (email: string) => Promise<{ success: boolean; resetCode?: string; message?: string; error?: string }>;
   resetPassword: (email: string, code: string, newPassword: string) => Promise<{ success: boolean; message?: string; error?: string }>;
@@ -55,17 +67,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchUser();
   }, [token]);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, options?: { mfaTransactionId?: string; mfaCode?: string }) => {
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, ...options }),
       });
 
       const data = await res.json();
+      if (data.mfaRequired) {
+        return {
+          success: false,
+          error: data.message || 'MFA verification is required',
+          mfaRequired: true,
+          mfaTransactionId: data.mfaTransactionId,
+          expiresAt: data.expiresAt,
+        };
+      }
+
       if (!res.ok) {
-        return { success: false, error: data.error || 'فشل تسجيل الدخول' };
+        return {
+          success: false,
+          error: data.error || data.message || 'فشل تسجيل الدخول',
+          mfaEnrollmentRequired: data.mfaEnrollmentRequired,
+        };
+      }
+
+      if (!data.token) {
+        return { success: false, error: 'لم يصدر الخادم رمز جلسة صالح' };
       }
 
       localStorage.setItem('aja_auth_token', data.token);

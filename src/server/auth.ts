@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserRole } from '../types/user';
 import { UserDoc } from '../types/firestore';
+import { AuthenticationAssuranceLevel, MFAMethod } from '../types/identity';
 
 function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
@@ -21,6 +22,14 @@ export interface AuthPayload {
   email: string;
   role: UserRole;
   fullName: string;
+  sessionId?: string;
+  authenticationLevel?: AuthenticationAssuranceLevel;
+  mfaVerified?: boolean;
+  mfaMethod?: MFAMethod;
+  mfaVerifiedAt?: string;
+  mfaEnrollmentRequired?: boolean;
+  stepUpVerifiedAt?: string;
+  stepUpExpiresAt?: string;
 }
 
 export interface AuthenticatedRequest extends Request {

@@ -330,6 +330,35 @@ export async function updateSessionStatus(sessionId: string, status: 'EXPIRED' |
   }
 }
 
+export async function updateSessionAssurance(
+  sessionId: string,
+  assurance: Partial<Pick<UserSessionRecord, 'authenticationLevel' | 'mfaVerified' | 'mfaMethod' | 'mfaVerifiedAt' | 'stepUpVerifiedAt' | 'stepUpExpiresAt'>>
+): Promise<void> {
+  const existing = memorySessions.get(sessionId);
+  if (existing) {
+    memorySessions.set(sessionId, { ...existing, ...assurance, lastActivityAt: new Date().toISOString() });
+  }
+
+  if (useLocalIdentityStore()) {
+    const data = ensureLocalIdentityStore();
+    const index = data.user_sessions!.findIndex((item) => item.sessionId === sessionId);
+    if (index !== -1) {
+      data.user_sessions![index] = { ...data.user_sessions![index], ...assurance, lastActivityAt: new Date().toISOString() };
+      localDb.save();
+    }
+    return;
+  }
+
+  try {
+    await getAdminFirestore().collection(USER_SESSIONS_COLLECTION).doc(sessionId).update({
+      ...assurance,
+      lastActivityAt: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.warn('[IdentityRepository] Update session assurance failed:', err);
+  }
+}
+
 export async function revokeAllSessionsExcept(userId: string, activeSessionId: string): Promise<number> {
   const sessions = await getUserActiveSessions(userId);
   let count = 0;

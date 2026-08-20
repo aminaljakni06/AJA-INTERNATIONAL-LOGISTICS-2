@@ -63,6 +63,13 @@ export class IdentityService {
     return identityEngine.revokeAllOtherUserSessions(userId, activeSessionId, actorUserId);
   }
 
+  public static async updateSessionAssurance(
+    sessionId: string,
+    assurance: Partial<Pick<UserSessionRecord, 'authenticationLevel' | 'mfaVerified' | 'mfaMethod' | 'mfaVerifiedAt' | 'stepUpVerifiedAt' | 'stepUpExpiresAt'>>
+  ): Promise<void> {
+    return identityEngine.updateSessionAssurance(sessionId, assurance);
+  }
+
   public static async getDevices(userId: string): Promise<RegisteredDeviceRecord[]> {
     return getUserDevices(userId);
   }

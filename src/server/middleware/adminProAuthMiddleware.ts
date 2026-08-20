@@ -3,11 +3,10 @@ import { AuthenticatedRequest, requireAuth } from '../auth';
 import { getUserById } from '../../db/repositories/userRepository';
 import { UserDoc } from '../../types/firestore';
 import { UserRole } from '../../types/user';
-
-const ADMIN_PRO_ROLES = new Set<UserRole>(['SYSTEM_ADMIN', 'PLATFORM_ADMIN']);
+import { hasPrivilegedMfaAssurance, isPrivilegedAdminRole } from '../../lib/auth/privilegedAuthPolicy';
 
 export function isAdminProRole(role: string | undefined): boolean {
-  return !!role && ADMIN_PRO_ROLES.has(role as UserRole);
+  return isPrivilegedAdminRole(role);
 }
 
 export function isPrivilegedAdministrator(user: Pick<UserDoc, 'role' | 'status'> | null | undefined): boolean {
@@ -26,6 +25,15 @@ export function requireAdminPro(req: AuthenticatedRequest, res: Response, next: 
       const principal = await getUserById(principalId);
       if (!principal || !isAdminProRole(principal.role) || principal.status !== 'ACTIVE') {
         res.status(403).json({ error: 'ADMIN_PRO / SYSTEM_ADMIN privileges are required for this action.' });
+        return;
+      }
+
+      if (!hasPrivilegedMfaAssurance(req.user || {})) {
+        res.status(403).json({
+          error: 'ADMIN_PRO MFA verification is required for this action.',
+          errorCode: 'PRIVILEGED_MFA_REQUIRED',
+          mfaRequired: true,
+        });
         return;
       }
 

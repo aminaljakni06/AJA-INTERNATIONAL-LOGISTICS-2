@@ -2,8 +2,43 @@ import { Router, Response } from 'express';
 import { requireAuth, requireRoles, AuthenticatedRequest } from '../auth';
 import { IdentityService } from '../../services/identityService';
 import { requireAdminPro } from '../middleware/adminProAuthMiddleware';
+import { getUserById } from '../../db/repositories/userRepository';
+import { createAuditLog } from '../../db/repositories/auditLogRepository';
+import { AccountStatus } from '../../types/identity';
+import { beginMfaChallenge, hasRecentStepUp, verifyMfaChallenge } from '../../lib/auth/privilegedMfaService';
+import { classifyAccountStatusHighRiskAction, HighRiskAction } from '../../lib/auth/privilegedAuthPolicy';
 
 const router = Router();
+
+async function requireStepUpForAction(
+  req: AuthenticatedRequest,
+  res: Response,
+  action: HighRiskAction,
+  targetUserId?: string
+): Promise<boolean> {
+  const user = req.user!;
+  if (hasRecentStepUp(user.userId, user.sessionId, action)) return true;
+
+  await createAuditLog({
+    actorUserId: user.userId,
+    action: 'STEP_UP_REQUIRED',
+    entityType: 'HIGH_RISK_ACTION',
+    entityId: targetUserId || action,
+    after: {
+      highRiskAction: action,
+      targetUserId,
+      sessionId: user.sessionId,
+    },
+  });
+
+  res.status(403).json({
+    error: 'Privileged step-up authentication is required for this high-risk action.',
+    errorCode: 'STEP_UP_REQUIRED',
+    stepUpRequired: true,
+    highRiskAction: action,
+  });
+  return false;
+}
 
 // GET /api/identity/profile
 router.get('/profile', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
@@ -168,6 +203,11 @@ router.post('/mfa/setup', requireAuth, async (req: AuthenticatedRequest, res: Re
 router.post('/mfa/disable', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const userId = req.user!.userId;
+    const targetUser = await getUserById(userId);
+    if (targetUser && ['SYSTEM_ADMIN', 'PLATFORM_ADMIN'].includes(targetUser.role)) {
+      const allowed = await requireStepUpForAction(req, res, 'DISABLE_MFA', userId);
+      if (!allowed) return;
+    }
     const mfa = await IdentityService.disableMFA(userId);
     res.json({
       message: 'تم تعطيل التحقق الثنائي (MFA)',
@@ -175,6 +215,73 @@ router.post('/mfa/disable', requireAuth, async (req: AuthenticatedRequest, res: 
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Failed to disable MFA';
+    res.status(500).json({ error: msg });
+  }
+});
+
+// POST /api/identity/mfa/challenge
+router.post('/mfa/challenge', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { purpose, highRiskAction } = req.body;
+    const stepUpAction = String(highRiskAction || '').trim() as HighRiskAction;
+
+    if (purpose !== 'STEP_UP' || !stepUpAction) {
+      res.status(400).json({ error: 'STEP_UP purpose and highRiskAction are required.', errorCode: 'INVALID_STEP_UP_REQUEST' });
+      return;
+    }
+
+    const challenge = await beginMfaChallenge({
+      userId: req.user!.userId,
+      sessionId: req.user!.sessionId,
+      purpose: 'STEP_UP',
+      action: stepUpAction,
+      ipAddress: req.ip,
+    });
+
+    res.json({
+      stepUpRequired: true,
+      mfaTransactionId: challenge.challengeId,
+      expiresAt: challenge.expiresAt,
+      highRiskAction: stepUpAction,
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Failed to create step-up challenge';
+    res.status(500).json({ error: msg });
+  }
+});
+
+// POST /api/identity/mfa/verify
+router.post('/mfa/verify', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { mfaTransactionId, challengeId, mfaCode, code } = req.body;
+    const verified = await verifyMfaChallenge({
+      challengeId: String(mfaTransactionId || challengeId || '').trim(),
+      userId: req.user!.userId,
+      sessionId: req.user!.sessionId,
+      code: String(mfaCode || code || '').trim(),
+    });
+
+    if (verified.ok !== true) {
+      res.status(401).json({ error: verified.message, errorCode: verified.errorCode });
+      return;
+    }
+
+    if (verified.purpose === 'STEP_UP' && verified.stepUpExpiresAt && req.user!.sessionId) {
+      await IdentityService.updateSessionAssurance(req.user!.sessionId, {
+        stepUpVerifiedAt: verified.verifiedAt,
+        stepUpExpiresAt: verified.stepUpExpiresAt,
+      });
+    }
+
+    res.json({
+      verified: true,
+      purpose: verified.purpose,
+      highRiskAction: verified.action,
+      verifiedAt: verified.verifiedAt,
+      stepUpExpiresAt: verified.stepUpExpiresAt,
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Failed to verify MFA challenge';
     res.status(500).json({ error: msg });
   }
 });
@@ -240,6 +347,13 @@ router.patch('/admin/status', requireAdminPro, async (req: AuthenticatedRequest,
       return;
     }
 
+    const targetUser = await getUserById(targetUserId);
+    const highRiskAction = classifyAccountStatusHighRiskAction(targetUser?.role, newStatus as AccountStatus);
+    if (highRiskAction) {
+      const allowed = await requireStepUpForAction(req, res, highRiskAction, targetUserId);
+      if (!allowed) return;
+    }
+
     const updated = await IdentityService.setStatus(targetUserId, newStatus, String(reason).trim(), adminUserId);
     res.json(updated);
   } catch (err: unknown) {
@@ -251,6 +365,9 @@ router.patch('/admin/status', requireAdminPro, async (req: AuthenticatedRequest,
 // PUT /api/identity/admin/password-policy
 router.put('/admin/password-policy', requireAdminPro, async (req: AuthenticatedRequest, res: Response) => {
   try {
+    const allowed = await requireStepUpForAction(req, res, 'CHANGE_AUTHENTICATION_POLICY');
+    if (!allowed) return;
+
     const policy = req.body;
     const updated = await IdentityService.updatePasswordPolicy(policy);
     res.json(updated);

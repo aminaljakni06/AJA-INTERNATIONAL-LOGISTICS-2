@@ -83,8 +83,8 @@ await createOrUpdateIdentityProfile(userId, {
   accountStatus: 'ACTIVE',
   role: 'SYSTEM_ADMIN',
   securityLevel: 5,
-  mfaEnabled: true,
-  mfaType: 'TOTP',
+  mfaEnabled: false,
+  mfaType: undefined,
   metadata: {
     adminPro: true,
     mfaRequired: true,
@@ -94,7 +94,7 @@ await createOrUpdateIdentityProfile(userId, {
 
 await saveMFAConfig({
   userId,
-  mfaEnabled: true,
+  mfaEnabled: false,
   method: 'TOTP',
   backupCodes: [],
   phoneVerified: false,

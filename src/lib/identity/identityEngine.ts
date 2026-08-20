@@ -17,6 +17,7 @@ import {
   createSessionRecord, 
   getUserActiveSessions, 
   updateSessionStatus, 
+  updateSessionAssurance,
   revokeAllSessionsExcept, 
   registerOrUpdateDevice, 
   getUserDevices, 
@@ -32,6 +33,8 @@ import { listUsers } from '../../db/repositories/userRepository';
 import { EventBusService } from '../../services/eventBusService';
 import { createAuditLog } from '../../db/repositories/auditLogRepository';
 import { isAdminProRole, isPrivilegedAdministrator } from '../../server/middleware/adminProAuthMiddleware';
+import { AuthenticationAssuranceLevel } from '../../types/identity';
+import { generateMfaSecret } from '../auth/privilegedMfaService';
 
 export class IdentityEngine {
 
@@ -262,7 +265,19 @@ export class IdentityEngine {
   public async registerSessionAndDevice(
     userId: string,
     token: string,
-    clientInfo: { ip: string; userAgent: string; deviceName?: string; isRememberMe?: boolean }
+    clientInfo: {
+      ip: string;
+      userAgent: string;
+      deviceName?: string;
+      isRememberMe?: boolean;
+      sessionId?: string;
+      authenticationLevel?: AuthenticationAssuranceLevel;
+      mfaVerified?: boolean;
+      mfaMethod?: MFAMethod;
+      mfaVerifiedAt?: string;
+      stepUpVerifiedAt?: string;
+      stepUpExpiresAt?: string;
+    }
   ): Promise<{ session: UserSessionRecord; device: RegisteredDeviceRecord }> {
     const now = new Date();
     const expiresAt = new Date(now.getTime() + (clientInfo.isRememberMe ? 30 : 7) * 24 * 60 * 60 * 1000).toISOString();
@@ -304,11 +319,17 @@ export class IdentityEngine {
     await registerOrUpdateDevice(device);
 
     // Create session record
-    const sessionId = `sess_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    const sessionId = clientInfo.sessionId || `sess_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
     const session: UserSessionRecord = {
       sessionId,
       userId,
       token,
+      authenticationLevel: clientInfo.authenticationLevel || 'AAL1',
+      mfaVerified: !!clientInfo.mfaVerified,
+      mfaMethod: clientInfo.mfaMethod,
+      mfaVerifiedAt: clientInfo.mfaVerifiedAt,
+      stepUpVerifiedAt: clientInfo.stepUpVerifiedAt,
+      stepUpExpiresAt: clientInfo.stepUpExpiresAt,
       ipAddress: clientInfo.ip || '127.0.0.1',
       userAgent: clientInfo.userAgent || '',
       deviceName,
@@ -326,6 +347,13 @@ export class IdentityEngine {
     await createOrUpdateIdentityProfile(userId, { lastLogin: nowStr });
 
     return { session, device };
+  }
+
+  public async updateSessionAssurance(
+    sessionId: string,
+    assurance: Partial<Pick<UserSessionRecord, 'authenticationLevel' | 'mfaVerified' | 'mfaMethod' | 'mfaVerifiedAt' | 'stepUpVerifiedAt' | 'stepUpExpiresAt'>>
+  ): Promise<void> {
+    await updateSessionAssurance(sessionId, assurance);
   }
 
   /**
@@ -374,10 +402,8 @@ export class IdentityEngine {
    * Generate MFA Backup Codes & Secret
    */
   public async setupMFASecret(userId: string, method: MFAMethod = 'TOTP'): Promise<MFAConfiguration> {
-    const backupCodes = Array.from({ length: 8 }, () => 
-      Math.floor(10000000 + Math.random() * 90000000).toString()
-    );
-    const secretKey = `JBSWY3DPEHPK3PXP_${Date.now().toString(36).toUpperCase()}`;
+    const backupCodes: string[] = [];
+    const secretKey = method === 'TOTP' ? generateMfaSecret() : undefined;
 
     const config: MFAConfiguration = {
       userId,

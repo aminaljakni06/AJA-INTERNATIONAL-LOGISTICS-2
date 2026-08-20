@@ -27,6 +27,8 @@ export type AccountStatus =
 
 export type MFAMethod = 'TOTP' | 'SMS' | 'EMAIL' | 'SECURITY_KEY';
 
+export type AuthenticationAssuranceLevel = 'AAL1' | 'AAL2' | 'AAL3';
+
 export type DeviceTrustStatus = 'TRUSTED' | 'UNTRUSTED' | 'REVOKED';
 
 export type SessionStatus = 'ACTIVE' | 'EXPIRED' | 'REVOKED';
@@ -123,6 +125,12 @@ export interface UserSessionRecord {
   sessionId: string;
   userId: string;
   token: string;
+  authenticationLevel?: AuthenticationAssuranceLevel;
+  mfaVerified?: boolean;
+  mfaMethod?: MFAMethod;
+  mfaVerifiedAt?: string;
+  stepUpVerifiedAt?: string;
+  stepUpExpiresAt?: string;
   ipAddress: string;
   userAgent: string;
   deviceName: string;
